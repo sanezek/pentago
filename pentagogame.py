@@ -1,19 +1,23 @@
 #pentago
+from blessings import Terminal 
 
-pole=[						# kw=1   kw=2
-[0,0,0,0,0,0],				# 0 0 0| 0 0 0
-[0,0,0,0,0,0],				# 0 0 0| 0 0 0
-[0,0,0,0,0,0],				# 0 0 0| 0 0 0
-[0,0,0,0,0,0],				#_____________
-[0,0,0,0,0,0],				# kw=3   kw=4
-[0,0,0,0,0,0]				# 0 0 0| 0 0 0
-]							# 0 0 0| 0 0 0
-							# 0 0 0| 0 0 0
+ 
+t = Terminal()
 
+pole=[						
+['o','o','o','o','o','o'],				
+['o','o','o','o','o','o'],				
+['o','o','o','o','o','o'],				
+['o','o','o','o','o','o'],				
+['o','o','o','o','o','o'],				
+['o','o','o','o','o','o']				
+]							
 
 pole2=[]
 
 player=1
+
+error=0
 
 def format2():
 	global pole 
@@ -39,7 +43,10 @@ def set_cvet(cor,cv):		#cordins=[x,y];cv= (1 or 2)
 	global pole
 	y=cor[1]
 	x=cor[0]
-	pole[x][y]=cv
+	if cv==1:
+		pole[x][y]=t.green('o')
+	else:
+		pole[x][y]=t.red('o')	
 	format3()
 
 def povp(kw):
@@ -135,41 +142,26 @@ def prow():
 def printpole():
 	print()
 	for i in range(3):
-		a=str(pole2[0][i][0])+' '+str(pole2[0][i][1])+' '+str(pole2[0][i][2])+'   '+str(pole2[1][i][0])+' '+str(pole2[1][i][1])+' '+str(pole2[1][i][2])
+		a=pole2[0][i][0]+' '+pole2[0][i][1]+' '+pole2[0][i][2]+' '+pole2[1][i][0]+' '+pole2[1][i][1]+' '+pole2[1][i][2]
 		print(a)
-	print()
 	for i in range(3):
-		a=str(pole2[2][i][0])+' '+str(pole2[2][i][1])+' '+str(pole2[2][i][2])+'   '+str(pole2[3][i][0])+' '+str(pole2[3][i][1])+' '+str(pole2[3][i][2])
+		a=pole2[2][i][0]+' '+pole2[2][i][1]+' '+pole2[2][i][2]+' '+pole2[3][i][0]+' '+pole2[3][i][1]+' '+pole2[3][i][2]
 		print(a)
 	print()
 
 def game():
 	printpole()
+	global error
+	error=0
 	print('ход {} игрока'.format(player))
-	if coms['hod'][1]==1:
-		print('поставьте фишку')
-	if coms['hod'][1]==0:
-		print('поверние любое из полей')
-	inp=input('>').split()
-	if len(inp)!=0:
-		com=inp[0]
-		if (com in coms)  :
-			if coms[com][1]==1:
-				comm=coms[com][0]
-			if len(inp)==2:
-				try:
-					comm(inp[1])
-				except TypeError:
-					print("недостаточно данных, попробуйте снова")
-			elif len(inp)==3:
-				comm(inp[1],inp[2])
-			elif len(inp)==1:
-				try:
-					comm()
-				except TypeError:
-					print("недостаточно данных, попробуйте снова")
-		else:
-			print('\nUnknown command\n'+help2())
+	inp=input('>')
+	if (len(inp)==4 and inp[0] in p[0] and inp[1] in p[1] and inp[2] in p[2] and inp[3] in p[3]): 
+		hod(int(inp[0]),int(inp[1]))
+		if error==0:
+			if inp[3]=='l':
+				povl2(int(inp[2]))
+			else:
+				povp2(int(inp[2]))		
 		d=prow()
 		if d==1:
 			print('Первый игрок победил, поздравляю')
@@ -178,71 +170,53 @@ def game():
 			print('Второй игрок победил, поздравляю')
 			exit()
 		elif d==3:
-			print('Поздравляю победила дружба, но КАК ВЫ ЭТО СДЕЕЛАЛИ???')
+			print('Поздравляю победила дружба, но, КАК ВЫ ЭТО СДЕЕЛАЛИ???')
 			exit()
+	elif inp =='exit':
+		exit()
 	else:
-		print(help())
+		print(hell())
 
 
 def hod(x,y):
-	try:
-		x=int(x)-1
-		y=int(y)-1
-		if pole[y][x]==0:
-			set_cvet([y,x],player)
-			coms['hod'][1]=0
-			coms['povp'][1]=1
-			coms['povl'][1]=1
-		else:
-			print('Пожалуйста,поместите фишку в свободную ячейку')
-	except ValueError:
-		print('Данные не в нужном формате, попробуйте снова')
+	x=int(x)-1
+	y=int(y)-1
+	if pole[y][x]=='o':
+		set_cvet([y,x],player)
+	else:
+		global error
+		error=1
+		print('Пожалуйста,поместите фишку в свободную ячейку')
 
-def help2():
-	return'Вот список доступных команд:\nhelp - помощь\nhod x y - ход игрока у которго право хода по координатам x y \npovp kw - поворот вправо квадрато под номер kw\npovд kw - поворот влево квадрато под номер kw\nexit - выход'
-
-
-def help():
-	print('Вот список доступных команд:\nhelp - помощь\nhod x y - ход игрока у которго право хода по координатам x y \npovp kw - поворот вправо квадрато под номер kw\npovд kw - поворот влево квадрато под номер kw\nexit - выход')
+def hell():
+	print('Введите данные в формате xyns \nх - номер столбца,в который надо положить шарик(1-6)\nу - номер строки в которуй положить шарик(1-6)\nn - номер поля, которое вы хотите повернуть(1-4)\ns - сторона в которую повернуть выбранное поле(l,r)')
 
 def povl2(kw):
-	try:
-		kw=int(kw)
-		povl(kw)
-		global player
-		if player==1:
-			player=2
-		else:
-			player=1
-		coms['hod'][1]=1
-		coms['povp'][1]=0
-		coms['povl'][1]=0
-	except ValueError:
-		print('Данные не в нужном формате, попробуйте снова')
+	kw=int(kw)
+	povl(kw)
+	global player
+	if player==1:
+		player=2
+	else:
+		player=1
+
 
 
 def povp2(kw):
-	try:
-		global player
-		kw=int(kw)
-		povp(kw)
-		if player==1:
-			player=2
-		else:
-			player=1	
-		coms['hod'][1]=1
-		coms['povp'][1]=0
-		coms['povl'][1]=0
-	except ValueError:
-		print('Данные не в нужном формате, попробуйте снова')
+	global player
+	kw=int(kw)
+	povp(kw)
+	if player==1:
+		player=2
+	else:
+		player=1	
 
-coms={
-	'help':[help,1],				#haha
-	'hod':[hod,1],
-	'povl':[povl2,0],
-	'povp':[povp2,0],
-	'exit':[exit,1]
-}
+p=[
+['1','2','3','4','5','6'],
+['1','2','3','4','5','6'],
+['1','2','3','4'],
+['r','l']
+]
 
 format3()
 while 1:
