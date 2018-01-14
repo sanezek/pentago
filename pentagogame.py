@@ -1,8 +1,10 @@
 #pentago
-from blessings import Terminal 
+#it is a board geme
+#you can look rules on https://webdav.info.ucl.ac.be/webdav/ingi2261/ProblemSet3/PentagoRulesStrategy.pdf
+#sololear can't run this code on server, but you can test it on your PC
+#my github:github.com/sanezek/pentago
+#pls print coments
 
- 
-t = Terminal()
 
 pole=[						
 ['o','o','o','o','o','o'],				
@@ -44,9 +46,9 @@ def set_cvet(cor,cv):		#cordins=[x,y];cv= (1 or 2)
 	y=cor[1]
 	x=cor[0]
 	if cv==1:
-		pole[x][y]=t.green('o')
+		pole[x][y]='1'
 	else:
-		pole[x][y]=t.red('o')	
+		pole[x][y]='2'	
 	format3()
 
 def povp(kw):
@@ -153,7 +155,7 @@ def game():
 	printpole()
 	global error
 	error=0
-	print('ход {} игрока'.format(player))
+	print('running {} player'.format(player))
 	inp=input('>')
 	if (len(inp)==4 and inp[0] in p[0] and inp[1] in p[1] and inp[2] in p[2] and inp[3] in p[3]): 
 		hod(int(inp[0]),int(inp[1]))
@@ -164,13 +166,13 @@ def game():
 				povp2(int(inp[2]))		
 		d=prow()
 		if d==1:
-			print('Первый игрок победил, поздравляю')
+			print('The first player winы')
 			exit()
 		elif d==2:
-			print('Второй игрок победил, поздравляю')
+			print('The second player wins')
 			exit()
 		elif d==3:
-			print('Поздравляю победила дружба, но, КАК ВЫ ЭТО СДЕЕЛАЛИ???')
+			print('draw')
 			exit()
 	elif inp =='exit':
 		exit()
@@ -186,10 +188,10 @@ def hod(x,y):
 	else:
 		global error
 		error=1
-		print('Пожалуйста,поместите фишку в свободную ячейку')
+		print('Please put the chip into an empty cell')
 
 def hell():
-	print('Введите данные в формате xyns \nх - номер столбца,в который надо положить шарик(1-6)\nу - номер строки в которуй положить шарик(1-6)\nn - номер поля, которое вы хотите повернуть(1-4)\ns - сторона в которую повернуть выбранное поле(l,r)')
+	print('Enter the data in the format xyns \nx - the number of the column in which to put the ball (1-6) \ny - the number of the line in which to put the ball (1-6) \nn - the number of the field you want to rotate (1-4) \ns is the side to rotate the selected field (l, r)')
 
 def povl2(kw):
 	kw=int(kw)
@@ -218,6 +220,8 @@ p=[
 ['r','l']
 ]
 
+print("sololearn can't  run my code, but u can test in on your PC")
+print("rules here : https://webdav.info.ucl.ac.be/webdav/ingi2261/ProblemSet3/PentagoRulesStrategy.pdf")
 format3()
 while 1:
 	game()
