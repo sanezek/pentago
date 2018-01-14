@@ -220,8 +220,7 @@ p=[
 ['r','l']
 ]
 
-print("sololearn can't  run my code, but u can test in on your PC")
-print("rules here : https://webdav.info.ucl.ac.be/webdav/ingi2261/ProblemSet3/PentagoRulesStrategy.pdf")
+
 format3()
 while 1:
 	game()
